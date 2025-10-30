@@ -8,7 +8,7 @@ body {
   align-items: center;
 }
 
-/* Stage */
+/* Stage container for the robot */
 .stage {
   width: 200px;
   height: 300px;
@@ -16,10 +16,11 @@ body {
   cursor: pointer;
 }
 
-/* Robot base structure */
+/* Robot base position (completely still by default) */
 .robot {
   position: absolute;
   bottom: 0;
+  transform: none;
 }
 
 /* Head */
@@ -32,6 +33,7 @@ body {
   margin: 0 auto;
 }
 
+/* Eyes (no blinking by default) */
 .eyes {
   position: absolute;
   top: 25px;
@@ -40,6 +42,7 @@ body {
   height: 15px;
   background: #0a192f;
   border-radius: 10px;
+  transition: height 0.1s;
 }
 
 /* Body */
@@ -60,17 +63,11 @@ body {
   position: absolute;
   top: 10px;
   border-radius: 10px;
+  transform: none;
 }
 
-.arm.left {
-  left: -25px;
-  transform-origin: top right;
-}
-
-.arm.right {
-  right: -25px;
-  transform-origin: top left;
-}
+.arm.left { left: -25px; transform-origin: top right; }
+.arm.right { right: -25px; transform-origin: top left; }
 
 /* Legs */
 .leg {
@@ -80,40 +77,38 @@ body {
   position: absolute;
   bottom: -70px;
   border-radius: 10px;
+  transform: none;
 }
 
-.leg.left {
-  left: 20px;
-  transform-origin: top right;
-}
+.leg.left { left: 20px; transform-origin: top right; }
+.leg.right { right: 20px; transform-origin: top left; }
 
-.leg.right {
-  right: 20px;
-  transform-origin: top left;
-}
-
-/* 🔥 Animations activate only when hovering the stage */
+/* ✨ Dance & Blink animations trigger ONLY on hover */
 .stage:hover .robot {
   animation: dance 1s infinite alternate ease-in-out;
 }
 
 .stage:hover .arm.left {
-  animation: armLeft 1s infinite alternate;
+  animation: armLeft 1s infinite alternate ease-in-out;
 }
 
 .stage:hover .arm.right {
-  animation: armRight 1s infinite alternate;
+  animation: armRight 1s infinite alternate ease-in-out;
 }
 
 .stage:hover .leg.left {
-  animation: legLeft 1s infinite alternate;
+  animation: legLeft 1s infinite alternate ease-in-out;
 }
 
 .stage:hover .leg.right {
-  animation: legRight 1s infinite alternate;
+  animation: legRight 1s infinite alternate ease-in-out;
 }
 
-/* KEYFRAMES for the dance */
+.stage:hover .eyes {
+  animation: blink 2s infinite ease-in-out;
+}
+
+/* 🕺 Dance and move animations */
 @keyframes dance {
   from { transform: rotate(-10deg) translateY(0); }
   to { transform: rotate(10deg) translateY(-10px); }
@@ -137,4 +132,14 @@ body {
 @keyframes legRight {
   from { transform: rotate(20deg); }
   to { transform: rotate(-20deg); }
+}
+
+/* 👀 Eye blink animation */
+@keyframes blink {
+  0%, 90%, 100% {
+    height: 15px; /* open */
+  }
+  95% {
+    height: 3px; /* blink */
+  }
 }
